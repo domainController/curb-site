@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Curb — a hybrid secondhand marketplace</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400;1,6..72,500;1,6..72,600&family=Inter:wght@400;500;600;700&display=swap');
+
+  :root{
+    --ink:#0F1D26;
+    --navy:#16283350;
+    --navy-solid:#16283A;
+    --navy-deep:#0F1D26;
+    --stone:#EDE8DC;
+    --stone-deep:#DED6C2;
+    --paper:#F8F6F0;
+    --clay:#B8825A;
+    --clay-deep:#96633C;
+    --line:#D6CDB8;
+    --ink-soft:#5B5648;
+  }
+
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:'Inter', sans-serif; -webkit-font-smoothing:antialiased;
+  }
+  .serif{ font-family:'Newsreader', serif; font-weight:500; }
+  .serif-i{ font-family:'Newsreader', serif; font-style:italic; font-weight:400; }
+
+  p{ line-height:1.6; color:var(--ink-soft); max-width:42ch; margin:0; font-size:15.5px; }
+  a{ color:inherit; }
+  .wrap{ max-width:1160px; margin:0 auto; padding:0 32px; }
+
+  /* ---------- NAV ---------- */
+  nav{ position:sticky; top:0; z-index:40; background:var(--paper); border-bottom:1px solid var(--line); }
+  .nav-inner{ max-width:1160px; margin:0 auto; padding:20px 32px; display:flex; align-items:center; justify-content:space-between; }
+  .logo{ font-family:'Newsreader', serif; font-style:italic; font-weight:500; font-size:24px; }
+  .nav-links{ display:flex; align-items:center; gap:26px; font-size:13.5px; }
+  .nav-links a{ text-decoration:none; color:var(--ink-soft); }
+  .nav-links a:hover{ color:var(--ink); }
+  .nav-links .pilot{ color:var(--clay-deep); font-weight:600; }
+
+  /* ---------- HERO ---------- */
+  header.hero{ background:var(--navy-deep); color:var(--stone); padding:0; }
+  .hero-grid{ display:grid; grid-template-columns:1fr 1fr; align-items:stretch; min-height:600px; }
+  .hero-copy{ padding:80px 56px 80px 32px; display:flex; flex-direction:column; justify-content:center; }
+  .hero-copy .eyebrow{ font-size:13px; color:#B7A98C; margin:0 0 20px 0; font-family:'Inter'; font-weight:500; }
+  h1.serif-i{ font-size:clamp(34px, 4.4vw, 52px); line-height:1.12; margin:0 0 24px 0; max-width:15ch; color:var(--paper); }
+  .hero-copy p{ color:#C7BEA9; max-width:40ch; font-size:16.5px; }
+  .cta-row{ display:flex; gap:14px; margin-top:34px; flex-wrap:wrap; }
+  .btn{ font-family:'Inter'; font-weight:600; font-size:14.5px; padding:14px 24px; border-radius:1px; border:1px solid transparent; cursor:pointer; text-decoration:none; display:inline-block; }
+  .btn-primary{ background:var(--stone); color:var(--navy-deep); }
+  .btn-primary:hover{ background:#fff; }
+  .btn-outline{ background:transparent; color:var(--stone); border-color:#3E5164; }
+  .btn-outline:hover{ border-color:var(--stone); }
+
+  .hero-art{ position:relative; background:#0B161E; }
+  .hero-art svg{ width:100%; height:100%; display:block; }
+
+  /* ---------- VALUES BAND ---------- */
+  section.values{ background:var(--stone); padding:70px 0; text-align:center; }
+  .values .wrap{ max-width:760px; }
+  .values p.serif-i{ font-size:clamp(20px,2.6vw,28px); line-height:1.5; color:var(--navy-deep); margin:0 auto; max-width:34ch; }
+
+  /* ---------- SECTION HEAD ---------- */
+  .section-head{ max-width:52ch; margin-bottom:44px; }
+  .kicker{ font-size:12.5px; color:var(--clay-deep); font-weight:600; margin:0 0 10px 0; }
+  .section-head h2.serif{ font-size:clamp(26px,3vw,34px); margin:0 0 12px 0; color:var(--ink); font-weight:500; }
+  .section-head p{ margin:0; max-width:48ch; }
+
+  /* ---------- DEPARTMENTS (pillars) ---------- */
+  section.pillars{ background:var(--paper); padding:80px 0; }
+  .dept-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
+  .dept-card{ display:flex; flex-direction:column; }
+  .dept-art{ background:var(--navy-deep); aspect-ratio:4/5; overflow:hidden; }
+  .dept-art svg{ width:100%; height:100%; display:block; }
+  .dept-name{ font-family:'Newsreader'; font-style:italic; font-size:20px; margin:18px 0 6px 0; }
+  .dept-card p{ font-size:14px; max-width:none; }
+  .dept-link{ font-size:13px; font-weight:600; color:var(--clay-deep); text-decoration:none; margin-top:10px; border-bottom:1px solid var(--clay-deep); padding-bottom:1px; align-self:flex-start; }
+  .dept-link:hover{ color:var(--ink); border-color:var(--ink); }
+
+  /* ---------- DROP-OFF DETAIL ---------- */
+  section.dropoff{ background:var(--stone); padding:80px 0; }
+  .dropoff-featured{ display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-bottom:28px; }
+  .dropoff-card{ background:var(--navy-deep); display:grid; grid-template-columns:0.85fr 1.15fr; min-height:320px; }
+  .dropoff-card .dropoff-art{ background:#0B161E; }
+  .dropoff-card .dropoff-art svg{ width:100%; height:100%; display:block; }
+  .dropoff-copy{ padding:32px 30px; display:flex; flex-direction:column; justify-content:center; }
+  .dropoff-tag{ font-size:12px; font-weight:600; color:#C79A6E; margin:0 0 10px 0; }
+  .dropoff-copy h4{ font-family:'Newsreader'; font-style:italic; font-weight:500; font-size:22px; margin:0 0 10px 0; color:var(--stone); }
+  .dropoff-copy p{ font-size:14.5px; color:#C7BEA9; margin:0; max-width:none; }
+
+  .dropoff-simple{ display:grid; grid-template-columns:repeat(3,1fr); border-top:1px solid var(--line); }
+  .dropoff-simple .item{ padding:28px 26px 4px 0; border-right:1px solid var(--line); }
+  .dropoff-simple .item:last-child{ border-right:none; padding-right:0; }
+  .dropoff-simple .item:not(:first-child){ padding-left:26px; }
+  .dropoff-simple h4{ font-family:'Newsreader'; font-style:italic; font-size:18px; font-weight:500; margin:0 0 8px 0; color:var(--ink); }
+  .dropoff-simple p{ font-size:14px; max-width:none; }
+
+  /* ---------- STEPS ---------- */
+  section.steps{ background:var(--paper); padding:80px 0; border-top:1px solid var(--line); }
+  .steps-list{ display:grid; grid-template-columns:repeat(3,1fr); gap:36px; margin-top:40px; }
+  .step-num{ font-family:'Newsreader'; font-style:italic; font-size:30px; color:var(--clay); display:block; margin-bottom:12px; }
+  .step h4{ font-size:16px; font-weight:600; margin:0 0 8px 0; }
+  .step p{ margin:0; font-size:14.5px; }
+
+  /* ---------- WHY ---------- */
+  section.why{ background:var(--stone); padding:70px 0; border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+  .why-inner{ display:grid; grid-template-columns:0.6fr 1.4fr; gap:40px; align-items:start; }
+  .why-inner h3{ font-family:'Newsreader'; font-style:italic; font-weight:500; font-size:24px; margin:0; }
+  .why-inner p{ margin:0 0 14px 0; font-size:15px; max-width:58ch; }
+  .why-inner p:last-child{ margin-bottom:0; }
+
+  /* ---------- SHOPS ---------- */
+  section.shops{ background:var(--paper); padding:80px 0; }
+  .shops-grid{ display:grid; grid-template-columns:1fr 0.8fr; gap:44px; align-items:center; }
+  .shops-copy h2.serif{ font-size:clamp(26px,3vw,32px); margin:0 0 16px 0; }
+  .shops-copy p{ margin:0 0 26px 0; }
+  .shop-stats{ display:flex; gap:40px; }
+  .shop-stat b{ display:block; font-family:'Newsreader'; font-style:italic; font-size:30px; color:var(--clay-deep); font-weight:500; }
+  .shop-stat span{ font-size:13px; color:var(--ink-soft); }
+  .shops-art{ background:var(--navy-deep); aspect-ratio:4/5; }
+  .shops-art svg{ width:100%; height:100%; display:block; }
+
+  /* ---------- FOOTER ---------- */
+  footer{ background:var(--navy-deep); color:var(--stone); padding:70px 0 36px 0; }
+  .foot-grid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:48px; align-items:end; }
+  footer h2.serif-i{ font-size:clamp(28px,3.6vw,40px); margin:0 0 16px 0; color:var(--paper); }
+  footer .foot-note{ color:#B7A98C; font-size:15px; max-width:42ch; margin:0; }
+  .waitlist-form{ display:flex; gap:0; margin-top:10px; border-bottom:1px solid #3E5164; max-width:420px; }
+  .waitlist-form input[type=email]{ flex:1; padding:12px 0; border:none; background:transparent; color:var(--stone); font-family:'Inter'; font-size:15px; }
+  .waitlist-form input::placeholder{ color:#6E7C89; }
+  .waitlist-form button{ background:transparent; border:none; color:var(--stone); font-family:'Inter'; font-weight:600; font-size:14px; cursor:pointer; padding:12px 4px; }
+  .waitlist-form button:hover{ color:var(--clay); }
+  .form-note{ font-size:12.5px; color:#6E7C89; margin-top:12px; }
+  .foot-bottom{ margin-top:56px; padding-top:22px; border-top:1px solid #23384A; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; font-size:13px; color:#6E7C89; }
+
+  @media (max-width: 860px){
+    .hero-grid{ grid-template-columns:1fr; min-height:auto; }
+    .hero-art{ aspect-ratio:4/3; }
+    .hero-copy{ padding:56px 24px; }
+    .dept-grid, .steps-list, .dropoff-featured, .dropoff-simple, .why-inner, .shops-grid, .foot-grid{ grid-template-columns:1fr; }
+    .dropoff-card{ grid-template-columns:1fr; }
+    .dropoff-simple .item{ border-right:none; border-bottom:1px solid var(--line); padding:24px 0 !important; }
+    .dropoff-simple .item:last-child{ border-bottom:none; }
+    .nav-links .hide-mobile{ display:none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="logo">Curb</div>
+    <div class="nav-links">
+      <a href="#pillars" class="hide-mobile">Departments</a>
+      <a href="#shops" class="hide-mobile">For shops</a>
+      <a href="#waitlist" class="pilot">Zurich — early access</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-grid">
+    <div class="hero-copy">
+      <p class="eyebrow">Opening first in Zurich</p>
+      <h1 class="serif-i">Curb is a hybrid secondhand marketplace.</h1>
+      <p>With physical exchange spaces — a network of partner shops where every item can be dropped off, sold, or picked up. Nothing dropped, nothing lost.</p>
+      <div class="cta-row">
+        <a href="#waitlist" class="btn btn-primary">Get early access</a>
+        <a href="#shops" class="btn btn-outline">Partner your shop</a>
+      </div>
+    </div>
+    <div class="hero-art">
+      <svg viewBox="0 0 500 600" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <rect width="500" height="600" fill="#0B161E"/>
+        <g fill="none" stroke="#B8825A" stroke-width="1.6">
+          <!-- table line -->
+          <line x1="40" y1="470" x2="460" y2="470"/>
+          <!-- lamp -->
+          <path d="M110 130 L170 130 L155 190 L125 190 Z"/>
+          <line x1="140" y1="190" x2="140" y2="330"/>
+          <line x1="118" y1="330" x2="162" y2="330"/>
+          <!-- chair -->
+          <path d="M230 260 L230 470 M230 260 L300 260 L300 470 M230 340 L300 340"/>
+          <line x1="230" y1="200" x2="230" y2="260"/>
+          <line x1="230" y1="200" x2="280" y2="200"/>
+          <!-- stack of books -->
+          <rect x="340" y="400" width="90" height="14"/>
+          <rect x="332" y="414" width="106" height="14"/>
+          <rect x="346" y="428" width="78" height="14"/>
+          <!-- record -->
+          <circle cx="90" cy="410" r="46"/>
+          <circle cx="90" cy="410" r="8"/>
+          <!-- small plant -->
+          <path d="M400 250 C 390 220, 410 200, 415 175 M400 250 C 410 215, 430 205, 435 185 M400 250 C 395 215, 380 200, 372 180"/>
+          <path d="M382 250 L418 250 L412 300 L388 300 Z"/>
+        </g>
+        <g fill="#8A5A3F">
+          <circle cx="140" cy="330" r="2.4"/>
+          <circle cx="300" cy="340" r="2.4"/>
+          <circle cx="90" cy="410" r="2"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section class="values">
+  <div class="wrap">
+    <p class="serif-i">We believe good things are worth a second owner — not a landfill, and not another ad.</p>
+  </div>
+</section>
+
+<section class="pillars" id="pillars">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Three departments, one marketplace</p>
+      <h2 class="serif">However you're clearing something out.</h2>
+      <p>No hierarchy between them — list it yourself, hand it to a shop, or have it collected. Same pool of buyers, whichever path fits.</p>
+    </div>
+    <div class="dept-grid">
+      <div class="dept-card">
+        <div class="dept-art">
+          <svg viewBox="0 0 300 375" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="375" fill="#0B161E"/>
+            <g fill="none" stroke="#B8825A" stroke-width="1.6">
+              <rect x="80" y="120" width="140" height="100" rx="2"/>
+              <circle cx="150" cy="170" r="26"/>
+              <circle cx="150" cy="170" r="10"/>
+              <rect x="190" y="130" width="16" height="10"/>
+            </g>
+          </svg>
+        </div>
+        <div class="dept-name">Listings</div>
+        <p>Photos, a price, a short description. Live in minutes, searchable everywhere Curb operates.</p>
+      </div>
+      <div class="dept-card">
+        <div class="dept-art">
+          <svg viewBox="0 0 300 375" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="375" fill="#0B161E"/>
+            <g fill="none" stroke="#B8825A" stroke-width="1.6">
+              <path d="M95 150 L150 105 L205 150"/>
+              <rect x="100" y="150" width="100" height="90"/>
+              <rect x="140" y="190" width="20" height="50"/>
+            </g>
+          </svg>
+        </div>
+        <div class="dept-name">Drop-off</div>
+        <p>Bring it to a partner shop. Five ways to hand it over, from a window display to a no-contact drop.</p>
+        <a href="#dropoff" class="dept-link">See all five</a>
+      </div>
+      <div class="dept-card">
+        <div class="dept-art">
+          <svg viewBox="0 0 300 375" xmlns="http://www.w3.org/2000/svg">
+            <rect width="300" height="375" fill="#0B161E"/>
+            <g fill="none" stroke="#B8825A" stroke-width="1.6">
+              <rect x="80" y="150" width="80" height="55"/>
+              <path d="M160 165h30l20 20v20h-50z"/>
+              <circle cx="105" cy="215" r="12"/>
+              <circle cx="195" cy="215" r="12"/>
+            </g>
+          </svg>
+        </div>
+        <div class="dept-name">Pickup</div>
+        <p>Clearing out more than a few things? Book a collection tour — cash paid on the spot.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dropoff" id="dropoff">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">Drop-off, in detail</p>
+      <h2 class="serif">Five ways to hand something over.</h2>
+      <p>Not a single counter — a shop can take something in five different ways, depending on what you're bringing and how much distance you want from the sale.</p>
+    </div>
+
+    <div class="dropoff-featured">
+      <div class="dropoff-card">
+        <div class="dropoff-art">
+          <svg viewBox="0 0 260 320" xmlns="http://www.w3.org/2000/svg">
+            <rect width="260" height="320" fill="#0B161E"/>
+            <g stroke="#B8825A" stroke-width="1.4" fill="none">
+              <rect x="40" y="40" width="70" height="60"/>
+              <rect x="115" y="40" width="70" height="60"/>
+              <rect x="40" y="105" width="70" height="60" fill="#B8825A" stroke="none"/>
+              <rect x="115" y="105" width="70" height="60"/>
+              <rect x="40" y="170" width="70" height="60"/>
+              <rect x="115" y="170" width="70" height="60"/>
+              <rect x="40" y="235" width="70" height="35"/>
+              <rect x="115" y="235" width="70" height="35"/>
+            </g>
+            <rect x="60" y="122" width="18" height="12" fill="#0B161E"/>
+          </svg>
+        </div>
+        <div class="dropoff-copy">
+          <p class="dropoff-tag">Available around the clock</p>
+          <h4>Locker</h4>
+          <p>A rented compartment at the shop, open day and night — no need to time your visit to opening hours. The buyer and seller never have to meet.</p>
+        </div>
+      </div>
+
+      <div class="dropoff-card">
+        <div class="dropoff-art">
+          <svg viewBox="0 0 260 320" xmlns="http://www.w3.org/2000/svg">
+            <rect width="260" height="320" fill="#0B161E"/>
+            <g stroke="#B8825A" stroke-width="1.5" fill="none">
+              <ellipse cx="130" cy="185" rx="55" ry="12"/>
+              <line x1="130" y1="145" x2="130" y2="185"/>
+              <rect x="60" y="110" width="30" height="42" rx="2"/>
+              <line x1="60" y1="110" x2="42" y2="128"/>
+              <line x1="90" y1="110" x2="108" y2="128"/>
+              <rect x="170" y="110" width="30" height="42" rx="2"/>
+              <line x1="170" y1="110" x2="152" y2="128"/>
+              <line x1="200" y1="110" x2="218" y2="128"/>
+              <ellipse cx="145" cy="163" rx="9" ry="10"/>
+              <rect x="141" y="153" width="8" height="4" fill="#B8825A" stroke="none"/>
+            </g>
+            <rect x="80" y="90" width="100" height="16" fill="#8A5A3F"/>
+          </svg>
+        </div>
+        <div class="dropoff-copy">
+          <p class="dropoff-tag">Half an hour, reserved</p>
+          <h4>Table &amp; coffee</h4>
+          <p>Book a table and a slot. Meet the buyer face to face, over a coffee, to sell two or three items in one sitting — then it's someone else's turn.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="dropoff-simple">
+      <div class="item">
+        <h4>Vitrine</h4>
+        <p>Rent a section of the shop window. Your items are displayed, not shelved — seen from the street before they're seen online.</p>
+      </div>
+      <div class="item">
+        <h4>Comptoir</h4>
+        <p>Sell it straight to the shop, on the spot — like a pawn counter. They set the price, you get the cash immediately.</p>
+      </div>
+      <div class="item">
+        <h4>Reception</h4>
+        <p>Leave it at the counter for a euro or two. Someone else comes to collect it later — you never cross paths, no evaluation, no small talk.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="steps">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="kicker">From your place to cash</p>
+      <h2 class="serif">Three steps, whichever path you choose.</h2>
+    </div>
+    <div class="steps-list">
+      <div class="step"><span class="step-num">1</span><h4>List your items</h4><p>Photos and a short description, validated before any drop-off or pickup.</p></div>
+      <div class="step"><span class="step-num">2</span><h4>Choose your path</h4><p>Sell it yourself, hand it to a partner shop, or book a collection.</p></div>
+      <div class="step"><span class="step-num">3</span><h4>Get paid</h4><p>Cash on drop-off or pickup, or a transfer once it sells online.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="why">
+  <div class="wrap why-inner">
+    <h3>Why "Curb"</h3>
+    <div>
+      <p>A curb is a physical edge — and, as a verb, a restraint. Both meanings sit inside the same word: a marketplace that gives an unstructured, informal trade a real boundary.</p>
+      <p>The name has a direct precedent. In 19th-century New York, trading that couldn't get a seat on the stock exchange floor happened on the curb outside — literally, brokers on the sidewalk. That informal market eventually got walls, rules, and a new name: the American Stock Exchange. Same shift Curb is betting on for secondhand trade.</p>
+    </div>
+  </div>
+</section>
+
+<section class="shops" id="shops">
+  <div class="wrap shops-grid">
+    <div class="shops-copy">
+      <h2 class="serif">Your shop, more foot traffic.</h2>
+      <p>Partner shops list and sell what's already coming through the door, and earn a share of every sale — online or in person. Curb runs the listing software; you run the counter.</p>
+      <div class="shop-stats">
+        <div class="shop-stat"><b>1–2</b><span>partner shops per district — density over coverage</span></div>
+        <div class="shop-stat"><b>0</b><span>subscription required to start</span></div>
+      </div>
+    </div>
+    <div class="shops-art">
+      <svg viewBox="0 0 300 375" xmlns="http://www.w3.org/2000/svg">
+        <rect width="300" height="375" fill="#0B161E"/>
+        <g fill="none" stroke="#B8825A" stroke-width="1.5">
+          <line x1="40" y1="130" x2="260" y2="130"/>
+          <path d="M40 130 L60 90 L240 90 L260 130"/>
+          <rect x="60" y="130" width="180" height="130"/>
+          <rect x="90" y="160" width="50" height="70"/>
+          <rect x="165" y="160" width="45" height="45"/>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<footer id="waitlist">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <h2 class="serif-i">First stop: Zurich.</h2>
+        <p class="foot-note">We're starting with a small number of partner shops before opening elsewhere. Leave your email to hear when Curb goes live near you — or to register as a partner shop.</p>
+        <form class="waitlist-form" id="waitlistForm">
+          <input type="email" id="waitlistEmail" placeholder="you@email.com" required>
+          <button type="submit" id="waitlistBtn">Notify me</button>
+        </form>
+        <p class="form-note" id="waitlistNote">No spam — one email when Curb opens in your city.</p>
+      </div>
+      <div></div>
+    </div>
+    <div class="foot-bottom">
+      <span>Curb — curb.exchange · concept landing page, MVP in progress</span>
+      <span>Zurich, Switzerland</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const form = document.getElementById('waitlistForm');
+  const btn = document.getElementById('waitlistBtn');
+  const note = document.getElementById('waitlistNote');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    btn.textContent = 'Added ✓';
+    note.textContent = "You're on the list for the Zurich pilot.";
+    document.getElementById('waitlistEmail').disabled = true;
+  });
+</script>
+
+</body>
+</html>
